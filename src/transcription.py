@@ -6,7 +6,7 @@ import os
 key = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(api_key=key)
 
-pattern = "audios\\*.ogg"
+pattern = "**/audios/*.ogg"
 ogg_files = glob.glob(pattern)
 
 for file_name in ogg_files:
@@ -18,5 +18,8 @@ for file_name in ogg_files:
         response_format="text",
         file=audio_file,
         temperature=0.2,
-        prompt="Miss Jime, Miss Naty"
     )
+    print(transcription)
+    with open(f"{file_datetime.date()}.json", "w") as file:
+        file.write(str({file_datetime.date():transcription}))
+    
